@@ -1,19 +1,27 @@
 (function () {
-    'use strict';   
-    module.exports = {   
+    'use strict';
+
+    var mongoose = require('mongoose')
+
+    module.exports = {
         findUser: findUser,
-        saveUser: saveUser    
+        signup: signup,
+        saveUser: saveUser
     };
 
     // instance of UserModel for mongoose interactions
     var UserModel = require('./user.module')().UserModel;
 
-    function findUser(cookie){
-        return UserModel.find({ cookieValue: cookie })
+    function findUser(cookie) {
+        return UserModel.findOne({ _id: mongoose.Types.ObjectId(cookie) })
             .exec();
     }
 
-    function saveUser(user){
+    function signup(cookie, eventId) {
+        return UserModel.updateOne({ _id: mongoose.Types.ObjectId(cookie) }, { $push: { eventIds: eventId } })
+    }
+
+    function saveUser(user) {
         return UserModel.create(user);
     }
 

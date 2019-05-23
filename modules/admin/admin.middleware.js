@@ -1,65 +1,106 @@
 (function () {
-    'use strict';  
-
-    var jwt = require('jsonwebtoken');
-    var jwt_config = require('../../jwt_config/config');
-    //var expressJwt = require('express-jwt');
+    'use strict';
 
     module.exports = {
         login: login,
         getAll: getAll,
-     //   deleteUser: deleteUser
+        createAdmin: createAdmin,
+        deleteAdmin: deleteAdmin
     };
 
     // instance of AdminService to handle db interactions
     var AdminService = require('./admin.module')().AdminService;
 
-    // function to handle request to get list of all admins
+    // function to retrieve a list of all admins
     function getAll(req, res, next) {
-        console.debug("in middleware testmethod");
 
-        let header = req.headers['authorization'];
+        AdminService.getAll()
+            .then(success)
+            .catch(failure);
 
-        console.debug(header);
-
-        // check for authorization header
-        if(header && header.startsWith('Bearer ')){
-            // verify JSON Web Token
-            jwt.verify(header.split(' ')[1], jwt_config.secret, (err, decodedToken) => {
-                if(err){
-                    // if error happened - token somehow invalid
-                    // send unauthorized and error
-                    res.status(401).send(err);
-                } else {
-                    // token valid
-                    // call AdminService.getAll
-                    AdminService.getAll()
-                        .then(success)
-                        .catch(failure);                   
-                }
-            });
-        } else {
-            // if no header - go to next callback function
-            next();
-        }
-        
         function success(data) {
-            console.debug("in middleware testmethod success");
             req.response = data;
             next();
         }
 
         function failure(error) {
-            console.debug("in middleware testmethod failure");
             next(error);
-        }    
+        }
+    }
+
+    // function to create an admin
+    function createAdmin(req, res, next) {
+
+        AdminService.getAdmin(req.body.username)
+            .then(getAdminSuccess)
+            .catch(failure);
+
+        function getAdminSuccess(data) {
+            if (data.length === 0) {
+                AdminService.createAdmin(req.body)
+                    .then(success)
+                    .catch(failure);
+            } else {
+                req.response = 'username_exists';
+                next();
+            }
+        }
+
+        function success(data) {
+            req.response = data;
+            next();
+        }
+        function failure(err) {
+            next(err);
+        }
+    }
+
+    // function to delete an admin
+    function deleteAdmin(req, res, next) {
+
+        let adminId = '';
+
+        AdminService.getAdmin(req.body.username)
+            .then(getAdminSuccess)
+            .catch(failure);
+
+        function getAdminSuccess(data) {
+            if (data.length === 1) {
+                adminId = data[0]._id;
+                AdminService.getAll()
+                    .then(getAllSuccess)
+                    .catch(failure);
+            } else {
+                req.response = 'not_found';
+                next();
+            }
+        }
+
+        function getAllSuccess(data) {
+            if (data.length > 1) {
+                AdminService.deleteAdmin(adminId)
+                    .then(success)
+                    .catch(failure);
+            } else {
+                // there is only 1 admin document in the database
+                // not allowed to delete 
+                req.response = 'not_allowed';
+                next();
+            }
+        }
+
+        function success(data) {
+            req.response = data;
+            next();
+        }
+
+        function failure(err) {
+            next(err);
+        }
     }
 
     // function to handle login requests
     function login(req, res, next) {
-
-        console.debug("in middleware login");
-
         // call adminservice.login which returns a promise
         // that resolves to an admin with the corresponding username and password that was given
         // in the request
@@ -69,7 +110,6 @@
 
         // on successfull query
         function success(data) {
-            console.debug("in middleware login success");
             // set req.response to the returned data
             // for the next callback function
             req.response = data;
@@ -77,10 +117,9 @@
         }
 
         // on error
-        function failure(error) {            
-            console.debug("in middleware login failure");
+        function failure(error) {
             // skip next callback and send error
             next(error);
         }
-    }   
+    }
 })();

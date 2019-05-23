@@ -1,5 +1,5 @@
 (function () {
-    'use strict';  
+    'use strict';
 
     var jwt = require('jsonwebtoken');
     var jwt_config = require('../../jwt_config/config');
@@ -8,44 +8,52 @@
 
     module.exports = {
         findUser: findUser,
-        //saveUser: saveUser
-     //   deleteUser: deleteUser
+        signup: signup
     };
 
     // instance of UserService to handle db interactions
     var UserService = require('./user.module')().UserService;
 
-    function findUser(req, res, next){
-        console.debug("in user middleware find");
+    function findUser(req, res, next) {
         let cookie = req.cookies.GenforeningenCookie;
-        if(cookie !== undefined){
-            UserService.findUser(req.body.cookieValue)
+        if (cookie !== undefined) {
+            UserService.findUser(req.cookies.GenforeningenCookie)
                 .then(success)
                 .catch(failure);
         } else {
+            // no cookie in request
+            // user should be able to simply resend request
             next();
         }
 
-        function success(data){
+        function success(data) {
             req.response = data;
             next();
         }
-        function failure(err){
+        function failure(err) {
             next(err);
-        }   
+        }
     }
 
-    function saveUser(user){
-        UserService.saveUser(user)
-            .then(success)
-            .catch(failure);
-
-        function success(data){
-            req.response = data;
+    function signup(req, res, next) {
+        let cookie = req.cookies.GenforeningenCookie;
+        if (cookie !== undefined) {
+            UserService.signup(req.cookies.GenforeningenCookie, req.params.eventId)
+                .then(success)
+                .catch(failure);
+        } else {
+            // no cookie in request
+            // user should be able to simply resend request
+            next();
         }
 
-        function failure(err){
-            req.response = err;
+        function success(data) {
+            req.response = data;
+            next();
+        }
+
+        function failure(err) {
+            next(err);
         }
     }
 })();
