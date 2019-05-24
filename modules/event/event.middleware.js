@@ -3,6 +3,7 @@
 
     module.exports = {
         getFifty: getFifty,
+        getEvent: getEvent,
         getFiftyByDateAsc: getFiftyByDateAsc,
         getFiftyByDateDesc: getFiftyByDateDesc,
         deleteEvent: deleteEvent
@@ -24,6 +25,20 @@
         }
 
         function failure(err) {
+            next(err);
+        }
+    }
+
+    function getEvent(req, res, next){
+        EventService.getEvent(req.params.id)
+            .then(success)
+            .catch(failure);
+
+        function success(data){
+            req.response = data;
+            next();
+        }
+        function failure(err){
             next(err);
         }
     }

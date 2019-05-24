@@ -6,6 +6,7 @@
 
     module.exports = {
         getFifty: getFifty,
+        getEvent: getEvent,
         getFiftyByDateAsc: getFiftyByDateAsc,
         getFiftyByDateDesc: getFiftyByDateDesc,
         createEvent: createEvent,
@@ -37,6 +38,10 @@
             };
         }
         return EventModel.find(params).skip(pos).limit(3).exec();
+    }
+
+    function getEvent(id){
+        return EventModel.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
     }
 
     function getFiftyByDateAsc(str_pos, search, date) {
