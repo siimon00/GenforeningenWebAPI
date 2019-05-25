@@ -43,7 +43,7 @@
         return ReviewEventModel.find(params).skip(pos).limit(3).exec();
     }
 
-    function createReviewEvent(title, date, description, location, targetGroupMin, targetGroupMax, imageId) {
+    function createReviewEvent(title, date, description, location, targetGroupMin, targetGroupMax, externLink, imageId, eventContact) {
         return ReviewEventModel.create(
             {
                 title: title,
@@ -52,7 +52,9 @@
                 location: location,
                 targetGroupMin: targetGroupMin,
                 targetGroupMax: targetGroupMax,
-                imageId: imageId
+                externLink: externLink,
+                imageId: imageId,
+                eventContact: eventContact
             });
     }
 

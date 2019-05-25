@@ -14,7 +14,7 @@
 
     function getFifty(req, res, next) {
 
-        EventService.getFifty(req.body.position, req.body.search_string)
+        EventService.getFifty(req.query.position, req.query.search_string)
             .then(success)
             .catch(failure);
 
@@ -45,7 +45,7 @@
 
     function getFiftyByDateAsc(req, res, next) {
 
-        EventService.getFiftyByDateAsc(req.body.position, req.body.search_string, req.body.date)
+        EventService.getFiftyByDateAsc(req.query.position, req.query.search_string, req.query.date)
             .then(success)
             .catch(failure);
 
@@ -61,7 +61,7 @@
 
     function getFiftyByDateDesc(req, res, next) {
 
-        EventService.getFiftyByDateDesc(req.body.position, req.body.search_string, req.body.date)
+        EventService.getFiftyByDateDesc(req.query.position, req.query.search_string, req.query.date)
             .then(success)
             .catch(failure);
 

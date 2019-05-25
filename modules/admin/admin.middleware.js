@@ -60,7 +60,7 @@
 
         let adminId = '';
 
-        AdminService.getAdmin(req.body.username)
+        AdminService.getAdmin(req.query.username)
             .then(getAdminSuccess)
             .catch(failure);
 

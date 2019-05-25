@@ -11,7 +11,9 @@
         targetGroupMin: Number,
         targetGroupMax: Number,
         imageId: String,
-        status: String
+        externLink: String,
+        status: String,
+        eventContact: { name: String, email: String, phone: String }
     });
 
     /* AdminSchema.set('toJSON', {

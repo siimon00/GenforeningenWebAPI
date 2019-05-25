@@ -45,8 +45,11 @@
 
     // POST a new review_event
     router.post('/',
-        function (req, res, next) {
-            if (req.body.title && req.body.date && req.body.description && req.body.location && req.body.targetGroupMin && req.body.targetGroupMax && req.body.imageId) {
+        function (req, res, next) {            
+            if (req.body.title && req.body.date && req.body.description && req.body.location && 
+                req.body.targetGroupMin && req.body.targetGroupMax && req.body.imageId &&  
+                req.body.eventContact && req.body.eventContact.name && req.body.eventContact.email && req.body.eventContact.phone) {                
+
                 let tryDate = new Date(req.body.date);
                 if (!isNaN(tryDate)) {
                     next();

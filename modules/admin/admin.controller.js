@@ -3,6 +3,8 @@
     var express = require('express');
     var router = express.Router();
 
+    var mongoose = require('mongoose');
+
     var jwt = require('jsonwebtoken');
     var jwt_config = require('../../jwt_config/config');
     //var expressJwt = require('express-jwt');
@@ -83,16 +85,17 @@
         });
 
     // DELETE an admin
-    router.delete('/',
+    router.delete('/:id',
         // callback function one
         authorization,
-        // check that request body is as expected
+        // check that request params is as expected
         function (req, res, next) {
-            if (req.body.username) {
+            try {
+                let objectId = mongoose.Types.ObjectId(req.params.id);
                 next();
-            } else {
+            } catch(err){
                 res.status(400).send();
-            }
+            }          
         },
         // callback function three
         AdminMiddleware.deleteAdmin,
@@ -119,7 +122,7 @@
         AdminMiddleware.login,
         // callback function two
         function (req, res) {
-            console.debug("in controller login post");
+            //console.debug("in controller login post");
 
             // if the query was successfull 
             // req.response was set in the previous callback

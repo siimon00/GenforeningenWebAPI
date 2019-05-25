@@ -9,7 +9,9 @@
         location: String,
         targetGroupMin: Number,
         targetGroupMax: Number,
-        imageId: String
+        externLink: String,
+        imageId: String,
+        eventContact: { name: String, email: String, phone: String }
     });
 
     /* AdminSchema.set('toJSON', {

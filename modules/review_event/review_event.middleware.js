@@ -17,7 +17,7 @@
 
     function getFifty(req, res, next) {
 
-        ReviewEventService.getFifty(req.body.position, req.body.search_string)
+        ReviewEventService.getFifty(req.query.position, req.query.search_string)
             .then(success)
             .catch(failure);
 
@@ -33,6 +33,7 @@
     }
 
     function createReviewEvent(req, res, next) {
+        
         ReviewEventService.createReviewEvent(
             req.body.title,
             req.body.date,
@@ -40,7 +41,9 @@
             req.body.location,
             req.body.targetGroupMin,
             req.body.targetGroupMax,
-            req.body.imageId)
+            req.body.externLink,
+            req.body.imageId,
+            req.body.eventContact)
             .then(success)
             .catch(failure);
         
@@ -68,7 +71,9 @@
                 targetGroupMin: data.targetGroupMin,
                 targetGroupMax: data.targetGroupMax,
                 imageId: data.imageId,
-                status: 'Active'
+                externLink: data.externLink,
+                status: 'Active',
+                eventContact: data.eventContact
             };
             EventService.createEvent(newEvent)
                 .then(createEventSuccess)
@@ -108,7 +113,7 @@
 
     function getFiftyByDateAsc(req, res, next) {
 
-        ReviewEventService.getFiftyByDateAsc(req.body.position, req.body.search_string, req.body.date)
+        ReviewEventService.getFiftyByDateAsc(req.query.position, req.query.search_string, req.query.date)
             .then(success)
             .catch(failure);
 
@@ -124,7 +129,7 @@
 
     function getFiftyByDateDesc(req, res, next) {
 
-        ReviewEventService.getFiftyByDateDesc(req.body.position, req.body.search_string, req.body.date)
+        ReviewEventService.getFiftyByDateDesc(req.query.position, req.query.search_string, req.query.date)
             .then(success)
             .catch(failure);
 
