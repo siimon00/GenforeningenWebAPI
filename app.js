@@ -2,13 +2,16 @@ var express = require('express');
 var app = express();
 
 var mongoose = require('mongoose');
+
 var cors = require('cors');
 
 var MongoDBUtil = require('./modules/mongodb/mongodb.module').MongoDBUtil;
+MongoDBUtil.init();
 var AdminController = require('./modules/admin/admin.module')().AdminController;
 var UserController = require('./modules/user/user.module')().UserController;
 var EventController = require('./modules/event/event.module')().EventController;
 var ReviewEventController = require('./modules/review_event/review_event.module')().ReviewEventController;
+var ImageController = require('./modules/image/image.module')().ImageController;
 
 var bodyParser = require('body-parser');
 var urlencode = bodyParser.urlencoded({ extended: true });
@@ -26,7 +29,6 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-MongoDBUtil.init();
 
 // check if user cookie is set
 // on each request, before letting it fall through
@@ -88,6 +90,7 @@ app.use('/admins', AdminController);
 app.use('/users', UserController);
 app.use('/events', EventController);
 app.use('/review-events', ReviewEventController);
+app.use('/images', ImageController);
 
 const port = process.env.PORT || 4040;
 app.listen(port, () => {
