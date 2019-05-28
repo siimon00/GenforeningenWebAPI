@@ -43,23 +43,30 @@
             res.status(200).json(req.response);
         });
 
+    // GET number of events
+    router.get('/count',
+        EventMiddleware.count,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+
     // GET an event
     router.get('/:id',
-        function(req, res, next){
+        function (req, res, next) {
             try {
                 let objectId = mongoose.Types.ObjectId(req.params.id);
                 next();
-            } catch(err){
+            } catch (err) {
                 res.status(400).send();
             }
         },
         EventMiddleware.getEvent,
-        function(req, res){
-            if(req.response){
+        function (req, res) {
+            if (req.response) {
                 res.status(200).json(req.response);
             } else {
                 res.status(404).send();
-            }           
+            }
         });
 
     // sets an events status to inactive
@@ -68,7 +75,7 @@
         EventMiddleware.deleteEvent,
         function (req, res) {
             res.status(200).json(req.response);
-        });      
+        });
 
     // GET 50 events sorted by date ascending from position
     router.get('/by-date-asc',

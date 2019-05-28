@@ -2,6 +2,7 @@
     'use strict';
 
     module.exports = {
+        count: count,
         getFifty: getFifty,
         getEvent: getEvent,
         getFiftyByDateAsc: getFiftyByDateAsc,
@@ -11,6 +12,22 @@
 
     // instance of EventService to handle db interactions
     var EventService = require('./event.module')().EventService;
+
+    function count(req, res, next){
+
+        EventService.count()
+            .then(success)
+            .catch(failure);
+
+        function success(data){
+            req.response = data;
+            next();
+        }
+
+        function failure(err){
+            next(err);
+        }
+    }
 
     function getFifty(req, res, next) {
 
