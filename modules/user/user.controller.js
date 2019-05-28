@@ -3,6 +3,8 @@
     var express = require('express');
     var router = express.Router();
 
+    var mongoose = require('mongoose');
+
     var UserMiddleware = require('./user.module')().UserMiddleware;
 
     // details returns the eventid's that the current user is signed up for
@@ -22,7 +24,19 @@
         UserMiddleware.findUser,
         function (req, res, next) {
             if (req.response) {
-                next();
+                console.log(req.response);
+                if(req.response.eventIds.includes(req.params.eventId)){
+                    // user already signed up
+                    res.status(400).send('Already signed up');
+                } else {
+                    try {
+                        let objId = mongoose.Types.ObjectId(req.params.eventId);
+                        next();
+                    } catch (err) {
+                        // bad id
+                        res.status(400).send();
+                    }
+                }               
             } else {
                 // no cookie in request - user should simply be able to resend request
                 // send bad request

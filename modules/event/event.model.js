@@ -1,8 +1,11 @@
 (function () {
     var mongoose = require('mongoose');
+    var BaseConfig = require('../common/common.module')().BaseConfig;
+    var CommonModel = require('../common/common.module')().CommonModel;    
+
     var Schema = mongoose.Schema;
 
-    var EventSchema = new Schema({
+    const EventCommon = CommonModel.discriminator('EventType', new Schema({
         title: String,
         date: Date,
         description: String,
@@ -14,18 +17,7 @@
         externLink: String,
         status: String,
         eventContact: { name: String, email: String, phone: String }
-    });
+    }, BaseConfig));
 
-    /* AdminSchema.set('toJSON', {
-         transform: function(doc, ret, options) {
-             var returnJSON = {
-                 username: ret.username,
-                 name: ret.name
-             };
-             return returnJSON;
-         }
-     });
-     */
-
-    module.exports = mongoose.model('event', EventSchema);
+    module.exports = EventCommon;
 })();

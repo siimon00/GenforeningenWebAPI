@@ -72,6 +72,7 @@
                 targetGroupMax: data.targetGroupMax,
                 imageId: data.imageId,
                 externLink: data.externLink,
+                signups: 0,
                 status: 'Active',
                 eventContact: data.eventContact
             };

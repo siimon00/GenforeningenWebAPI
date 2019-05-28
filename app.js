@@ -7,6 +7,7 @@ var cors = require('cors');
 
 var MongoDBUtil = require('./modules/mongodb/mongodb.module').MongoDBUtil;
 MongoDBUtil.init();
+
 var AdminController = require('./modules/admin/admin.module')().AdminController;
 var UserController = require('./modules/user/user.module')().UserController;
 var EventController = require('./modules/event/event.module')().EventController;
@@ -19,7 +20,7 @@ var urlencode = bodyParser.urlencoded({ extended: true });
 var cookieParser = require('cookie-parser');
 
 var corsOptions = {
-    origin: 'https://genforeningenwebsite.azurewebsites.net',
+    origin: 'https://genforeningen2020-website.azurewebsites.net',
     credentials: true,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
@@ -84,6 +85,7 @@ app.use(async function (req, res, next) {
         }
     }
 });
+
 
 // Assign the Controllers to the corresponding paths
 app.use('/admins', AdminController);

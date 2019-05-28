@@ -1,10 +1,14 @@
 (function () {
     var mongoose = require('mongoose');
+    var BaseConfig = require('../common/common.module')().BaseConfig;
+    var CommonModel = require('../common/common.module')().CommonModel;    
+
     var Schema = mongoose.Schema;
 
-    var UserSchema = new Schema({
+    var UserCommon = CommonModel.discriminator('UserType', new Schema({
         //cookieValue: String,
         eventIds: Array
-    });
-    module.exports = mongoose.model('user', UserSchema);
+    }, BaseConfig));
+    
+    module.exports = UserCommon;
 })();

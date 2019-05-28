@@ -5,6 +5,7 @@
     var mongoose = require('mongoose');
 
     module.exports = {
+        addSignup: addSignup,
         getFifty: getFifty,
         getEvent: getEvent,
         getFiftyByDateAsc: getFiftyByDateAsc,
@@ -16,6 +17,10 @@
 
     // instance of EventModel for mongoose interactions
     var EventModel = require('./event.module')().EventModel;
+
+    function addSignup(id){
+        return EventModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { $inc: { signups: 1 }}).exec();
+    }
 
     function getFifty(str_pos, search) {
         let pos = 0;

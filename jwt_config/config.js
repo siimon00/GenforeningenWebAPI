@@ -1,1 +1,1 @@
-module.exports = { secret: 'IAmReallyUncomfortableHavingThisKeyInCleartextRightHere' }
+module.exports = { secret: 'IAmReallyUncomfortableHavingThisKeyInCleartextRightHere' };

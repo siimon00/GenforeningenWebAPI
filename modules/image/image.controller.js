@@ -14,7 +14,7 @@
     var ImageMiddleware = require('./image.module')().ImageMiddleware;
 
     var storage = new GridFsStorage({
-        db: mongoose.connection,
+        db: mongoose.connection,        
         file: (req, file) => {
             return new Promise((resolve, reject) => {
                 if(file.mimetype.includes('image/')){
@@ -26,7 +26,7 @@
     
                         const fileInfo = {
                             filename: filename,
-                            bucketName: 'images'
+                            bucketName: 'genforeningen'
                         };
                         resolve(fileInfo);
                     });
@@ -51,7 +51,7 @@
         ImageMiddleware.getFileData,
         function (req, res) {
             if(req.response){
-                let gridFSbucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'images' });
+                let gridFSbucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'genforeningen' });
                 if (gridFSbucket) {
                     res.set('Content-Type', req.response.contentType);
                     res.set(
