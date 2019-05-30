@@ -2,15 +2,15 @@
 
     'use strict';
 
+    const listLimit = 3;
+
     var mongoose = require('mongoose');
 
     module.exports = {
         count: count,
         addSignup: addSignup,
-        getFifty: getFifty,
         getEvent: getEvent,
-        getFiftyByDateAsc: getFiftyByDateAsc,
-        getFiftyByDateDesc: getFiftyByDateDesc,
+        getEvents: getEvents,
         createEvent: createEvent,
         deleteEvent: deleteEvent
     };
@@ -19,25 +19,22 @@
     // instance of EventModel for mongoose interactions
     var EventModel = require('./event.module')().EventModel;
 
-    function count() {
-        return EventModel.countDocuments().exec();
-    }
-
-    function addSignup(id){
-        return EventModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { $inc: { signups: 1 }}).exec();
-    }
-
-    function getFifty(str_pos, search) {
-        let pos = 0;
+    // function to get search parameters for the database query 
+    // for the functions that retrieve lists of events
+    function getSearchParams(search, date, desc) {
         let params = { status: 'Active' };
 
-        try {
-            pos = Number(str_pos);
-        } catch (err) {
-            pos = 0;
-        }
-
-        if (search) {
+        if (search && date) {
+            params = {
+                status: 'Active',
+                date: (desc ? { $lte: date } : { $gte: date }),
+                $or:
+                    [
+                        { title: { $regex: search, $options: 'i' } },
+                        { description: { $regex: search, $options: 'i' } }
+                    ]
+            };
+        } else if (search) {
             params = {
                 status: 'Active',
                 $or:
@@ -46,16 +43,28 @@
                         { description: { $regex: search, $options: 'i' } }
                     ]
             };
+        } else if (date) {
+            params = { status: 'Active', date: (desc ? { $lte: date } : { $gte: date }) };
         }
-        return EventModel.find(params).skip(pos).limit(3).exec();
+        return params;
     }
 
-    function getEvent(id){
+    function count(search, date, desc) {
+        let params = getSearchParams(search, date, desc);
+        return EventModel.countDocuments(params).exec();
+    }
+
+    function addSignup(id) {
+        return EventModel.findOneAndUpdate({ _id: mongoose.Types.ObjectId(id) }, { $inc: { signups: 1 } }).exec();
+    }
+
+    function getEvent(id) {
         return EventModel.findOne({ _id: mongoose.Types.ObjectId(id) }).exec();
     }
 
-    function getFiftyByDateAsc(str_pos, search, date) {
+    function getEvents(str_pos, search, date, desc) {
         let pos = 0;
+        let sort = {};
         let params = { status: 'Active' };
 
         try {
@@ -64,66 +73,18 @@
             pos = 0;
         }
 
-        if (search && date) {
-            params = {
-                status: 'Active',
-                date: { $gte: date },
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (search) {
-            params = {
-                status: 'Active',
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (date) {
-            params = { status: 'Active', date: { $gte: date } };
+        if (date) {
+            if (desc) {
+                if (desc.toLowerCase() === 'true') {
+                    sort = { date: 'desc' };
+                }
+            } else {
+                sort = { date: 'asc' };
+            }
         }
 
-        return EventModel.find(params).sort({ date: 'asc' }).skip(pos).limit(3).exec();
-    }
-
-    function getFiftyByDateDesc(str_pos, search, date) {
-        let pos = 0;
-        let params = { status: 'Active' };
-
-        try {
-            pos = Number(str_pos);
-        } catch (err) {
-            pos = 0;
-        }
-
-        if (search && date) {
-            params = {
-                status: 'Active',
-                date: { $lte: date },
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (search) {
-            params = {
-                status: 'Active',
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (date) {
-            params = { status: 'Active', date: { $lte: date } };
-        }
-
-        return EventModel.find(params).sort({ date: 'desc' }).skip(pos).limit(3).exec();
+        params = getSearchParams(search, date, desc);
+        return EventModel.find(params).sort(sort).skip(pos).limit(listLimit).exec();
     }
 
     function createEvent(event) {

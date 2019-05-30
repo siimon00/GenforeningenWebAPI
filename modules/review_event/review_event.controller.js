@@ -35,20 +35,28 @@
         }
     }
 
+    // GET number of review_events
+    router.get('/count',
+        authorization,
+        ReviewEventMiddleware.count,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+
     // GET 50 review_events from position set in body
     router.get('/',
         authorization,
-        ReviewEventMiddleware.getFifty,
+        ReviewEventMiddleware.getReviewEvents,
         function (req, res) {
             res.status(200).json(req.response);
         });
 
     // POST a new review_event
     router.post('/',
-        function (req, res, next) {            
-            if (req.body.title && req.body.date && req.body.description && req.body.location && 
-                req.body.targetGroupMin && req.body.targetGroupMax && req.body.imageId &&  
-                req.body.eventContact && req.body.eventContact.name && req.body.eventContact.email && req.body.eventContact.phone) {                
+        function (req, res, next) {
+            if (req.body.title && req.body.date && req.body.description && req.body.location &&
+                req.body.targetGroupMin && req.body.targetGroupMax && req.body.imageId &&
+                req.body.eventContact && req.body.eventContact.name && req.body.eventContact.email && req.body.eventContact.phone) {
 
                 let tryDate = new Date(req.body.date);
                 if (!isNaN(tryDate)) {
@@ -69,32 +77,16 @@
     router.delete('/:id',
         authorization,
         ReviewEventMiddleware.deleteReviewEvent,
-        function(req, res){
+        function (req, res) {
             res.status(200).json(req.response);
         });
-    
+
     // approve a review_event
     // this will create a new event with status 'Active' and delete the review_event
     router.put('/approve/:id',
         authorization,
         ReviewEventMiddleware.approveReviewEvent,
-        function(req, res){
-            res.status(200).json(req.response);
-        });
-
-    // GET 50 review_events sorted by date ascending from position
-    router.get('/by-date-asc',
-        authorization,
-        ReviewEventMiddleware.getFiftyByDateAsc,
-        function (req, res, next) {
-            res.status(200).json(req.response);
-        });
-
-    // GET 50 review_events sorted by date descending from position
-    router.get('/by-date-desc',
-        authorization,
-        ReviewEventMiddleware.getFiftyByDateDesc,
-        function (req, res, next) {
+        function (req, res) {
             res.status(200).json(req.response);
         });
 

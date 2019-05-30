@@ -2,12 +2,11 @@
     'use strict';
 
     module.exports = {
-        getFifty: getFifty,
+        count: count,
+        getReviewEvents: getReviewEvents,
         createReviewEvent: createReviewEvent,
         approveReviewEvent: approveReviewEvent,
-        deleteReviewEvent: deleteReviewEvent,
-        getFiftyByDateAsc: getFiftyByDateAsc,
-        getFiftyByDateDesc: getFiftyByDateDesc        
+        deleteReviewEvent: deleteReviewEvent,     
     };
 
     // instance of ReviewEventService to handle db interactions
@@ -15,9 +14,25 @@
     // instance of EventService to be able to 'approve' ReviewEvents, which is basically just moving them to an Event document
     var EventService = require('../event/event.module')().EventService;
 
-    function getFifty(req, res, next) {
+    function count(req, res, next) {
 
-        ReviewEventService.getFifty(req.query.position, req.query.search_string)
+        ReviewEventService.count(req.query.search_string, req.query.date, req.query.descending)
+            .then(success)
+            .catch(failure);
+
+        function success(data) {
+            req.response = data;
+            next();
+        }
+
+        function failure(err) {
+            next(err);
+        }
+    }
+
+    function getReviewEvents(req, res, next) {
+
+        ReviewEventService.getReviewEvents(req.query.position, req.query.search_string, req.query.date, req.query.descending)
             .then(success)
             .catch(failure);
 

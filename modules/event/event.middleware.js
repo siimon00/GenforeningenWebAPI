@@ -3,38 +3,19 @@
 
     module.exports = {
         count: count,
-        getFifty: getFifty,
         getEvent: getEvent,
-        getFiftyByDateAsc: getFiftyByDateAsc,
-        getFiftyByDateDesc: getFiftyByDateDesc,
+        getEvents: getEvents,      
         deleteEvent: deleteEvent
     };
 
     // instance of EventService to handle db interactions
     var EventService = require('./event.module')().EventService;
 
-    function count(req, res, next){
+    function count(req, res, next) {
 
-        EventService.count()
+        EventService.count(req.query.search_string, req.query.date, req.query.descending)
             .then(success)
             .catch(failure);
-
-        function success(data){
-            req.response = data;
-            next();
-        }
-
-        function failure(err){
-            next(err);
-        }
-    }
-
-    function getFifty(req, res, next) {
-
-        EventService.getFifty(req.query.position, req.query.search_string)
-            .then(success)
-            .catch(failure);
-
 
         function success(data) {
             req.response = data;
@@ -46,41 +27,26 @@
         }
     }
 
-    function getEvent(req, res, next){
+    function getEvent(req, res, next) {
         EventService.getEvent(req.params.id)
             .then(success)
             .catch(failure);
 
-        function success(data){
-            req.response = data;
-            next();
-        }
-        function failure(err){
-            next(err);
-        }
-    }
-
-    function getFiftyByDateAsc(req, res, next) {
-
-        EventService.getFiftyByDateAsc(req.query.position, req.query.search_string, req.query.date)
-            .then(success)
-            .catch(failure);
-
         function success(data) {
             req.response = data;
             next();
         }
-
         function failure(err) {
             next(err);
         }
     }
 
-    function getFiftyByDateDesc(req, res, next) {
+    function getEvents(req, res, next) {
 
-        EventService.getFiftyByDateDesc(req.query.position, req.query.search_string, req.query.date)
+        EventService.getEvents(req.query.position, req.query.search_string, req.query.date, req.query.descending)
             .then(success)
             .catch(failure);
+
 
         function success(data) {
             req.response = data;

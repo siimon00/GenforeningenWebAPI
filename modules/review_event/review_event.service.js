@@ -2,27 +2,62 @@
 
     'use strict';
 
+    const listLimit = 3;
+
     var mongoose = require('mongoose');
 
     module.exports = {
+        count: count,
         getReviewEvent: getReviewEvent,
-        getFifty: getFifty,
+        getReviewEvents: getReviewEvents,
         createReviewEvent: createReviewEvent,
         deleteReviewEvent: deleteReviewEvent,
-        getFiftyByDateAsc: getFiftyByDateAsc,
-        getFiftyByDateDesc: getFiftyByDateDesc        
     };
 
     // instance of ReviewEventModel for mongoose interactions
     var ReviewEventModel = require('./review_event.module')().ReviewEventModel;
 
-    function getReviewEvent(id){
+    // function to get search parameters for the database query 
+    // for the functions that retrieve lists of events
+    function getSearchParams(search, date, desc) {
+        let params = {};
+
+        if (search && date) {
+            params = {
+                date: (desc ? { $lte: date } : { $gte: date }),
+                $or:
+                    [
+                        { title: { $regex: search, $options: 'i' } },
+                        { description: { $regex: search, $options: 'i' } }
+                    ]
+            };
+        } else if (search) {
+            params = {
+                $or:
+                    [
+                        { title: { $regex: search, $options: 'i' } },
+                        { description: { $regex: search, $options: 'i' } }
+                    ]
+            };
+        } else if (date) {
+            params = { date: (desc ? { $lte: date } : { $gte: date }) };
+        }
+        return params;
+    }
+
+    function count(search, date, desc) {
+        let params = getSearchParams(search, date, desc);
+        return ReviewEventModel.countDocuments(params).exec();
+    }
+
+    function getReviewEvent(id) {
         return ReviewEventModel.findOne({ _id: mongoose.Types.ObjectId(id) })
             .exec();
     }
 
-    function getFifty(str_pos, search) {
+    function getReviewEvents(str_pos, search, date, desc) {
         let pos = 0;
+        let sort = {};
         let params = {};
 
         try {
@@ -31,16 +66,18 @@
             pos = 0;
         }
 
-        if (search) {
-            params = {
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
+        if (date) {
+            if (desc) {
+                if (desc.toLowerCase() === 'true') {
+                    sort = { date: 'desc' };
+                }
+            } else {
+                sort = { date: 'asc' };
+            }
         }
-        return ReviewEventModel.find(params).skip(pos).limit(3).exec();
+
+        params = getSearchParams(search, date, desc);
+        return ReviewEventModel.find(params).sort(sort).skip(pos).limit(listLimit).exec();
     }
 
     function createReviewEvent(title, date, description, location, targetGroupMin, targetGroupMax, externLink, imageId, eventContact) {
@@ -58,77 +95,8 @@
             });
     }
 
-    function deleteReviewEvent(id){
+    function deleteReviewEvent(id) {
         return ReviewEventModel.deleteOne({ _id: mongoose.Types.ObjectId(id) })
             .exec();
     }
-
-    function getFiftyByDateAsc(str_pos, search, date) {
-        let pos = 0;
-        let params = {};
-
-        try {
-            pos = Number(str_pos);
-        } catch (err) {
-            pos = 0;
-        }
-
-        if (search && date) {
-            params = {
-                date: { $gte: date },
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (search) {
-            params = {
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (date) {
-            params = { date: { $gte: date } };
-        }
-
-        return ReviewEventModel.find(params).sort({ date: 'asc' }).skip(pos).limit(3).exec();
-    }
-
-    function getFiftyByDateDesc(str_pos, search, date) {
-        let pos = 0;
-        let params = {};
-
-        try {
-            pos = Number(str_pos);
-        } catch (err) {
-            pos = 0;
-        }
-
-        if (search && date) {
-            params = {
-                date: { $lte: date },
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (search) {
-            params = {
-                $or:
-                    [
-                        { title: { $regex: search, $options: 'i' } },
-                        { description: { $regex: search, $options: 'i' } }
-                    ]
-            };
-        } else if (date) {
-            params = { date: { $lte: date } };
-        }
-
-        return ReviewEventModel.find(params).sort({ date: 'desc' }).skip(pos).limit(3).exec();
-    }
-
 })();

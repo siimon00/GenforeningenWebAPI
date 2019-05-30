@@ -38,7 +38,7 @@
 
     // GET 50 events from position set in body
     router.get('/',
-        EventMiddleware.getFifty,
+        EventMiddleware.getEvents,
         function (req, res) {
             res.status(200).json(req.response);
         });
@@ -48,7 +48,7 @@
         EventMiddleware.count,
         function (req, res) {
             res.status(200).json(req.response);
-        });
+        });  
 
     // GET an event
     router.get('/:id',
@@ -74,20 +74,6 @@
         authorization,
         EventMiddleware.deleteEvent,
         function (req, res) {
-            res.status(200).json(req.response);
-        });
-
-    // GET 50 events sorted by date ascending from position
-    router.get('/by-date-asc',
-        EventMiddleware.getFiftyByDateAsc,
-        function (req, res, next) {
-            res.status(200).json(req.response);
-        });
-
-    // GET 50 events sorted by date descending from position
-    router.get('/by-date-desc',
-        EventMiddleware.getFiftyByDateDesc,
-        function (req, res, next) {
             res.status(200).json(req.response);
         });
 
