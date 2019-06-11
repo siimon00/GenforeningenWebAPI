@@ -1,0 +1,102 @@
+[
+    {
+        "_id": "5cec53900222755dc4aeb87a",
+        "_type": "EventType",
+        "title" : "test_event_number_one",
+        "date": "2020-08-15 00:00:00.000Z",
+        "description" : "This is a hoax description only used to take up space and waste the time of any poor soul who would ever be so unfortunate as to have being jebaited into reading through the entirety of this text",
+        "location" : "Søndergade 2, 6400 Sønderborg",
+        "targetGroupMin" : 25,
+        "targetGroupMax" : 30,
+        "imageId" : "none",
+        "externLink" : "",
+        "signups" : 0,
+        "status" : "Active",
+        "eventContact" : {
+            "name" : "Simon",
+            "email" : "test@mail.dk",
+            "phone" : "11223344"
+        },
+        "__v" : 0
+    },
+    {
+        "_id": "5cec5a8147fb8651dc1a3d61",
+        "_type": "EventType",
+        "title" : "test_event_number_two",
+        "date": "2020-08-15 00:00:00.000Z",
+        "description" : "This is a hoax description only used to take up space and waste the time of any poor soul who would ever be so unfortunate as to have being jebaited into reading through the entirety of this text",
+        "location" : "Søndergade 2, 6400 Sønderborg",
+        "targetGroupMin" : 25,
+        "targetGroupMax" : 30,
+        "imageId" : "none",
+        "externLink" : "",
+        "signups" : 0,
+        "status" : "Active",
+        "eventContact" : {
+            "name" : "Simon",
+            "email" : "test@mail.dk",
+            "phone" : "11223344"
+        },
+        "__v" : 0
+    },
+    {
+        "_id": "5cec94ed97ef2f43141c2b9c",
+        "_type": "EventType",
+        "title" : "test_event_number_three",
+        "date": "2020-08-15 00:00:00.000Z",
+        "description" : "This is a hoax description only used to take up space and waste the time of any poor soul who would ever be so unfortunate as to have being jebaited into reading through the entirety of this text",
+        "location" : "Søndergade 2, 6400 Sønderborg",
+        "targetGroupMin" : 25,
+        "targetGroupMax" : 30,
+        "imageId" : "none",
+        "externLink" : "",
+        "signups" : 0,
+        "status" : "Active",
+        "eventContact" : {
+            "name" : "Simon",
+            "email" : "test@mail.dk",
+            "phone" : "11223344"
+        },
+        "__v" : 0
+    },
+    {
+        "_id": "5cec7cb36ca9305d143fee63",
+        "_type": "EventType",
+        "title" : "test_event_number_four",
+        "date": "2020-08-15 00:00:00.000Z",
+        "description" : "This is a hoax description only used to take up space and waste the time of any poor soul who would ever be so unfortunate as to have being jebaited into reading through the entirety of this text",
+        "location" : "Søndergade 2, 6400 Sønderborg",
+        "targetGroupMin" : 25,
+        "targetGroupMax" : 30,
+        "imageId" : "none",
+        "externLink" : "",
+        "signups" : 0,
+        "status" : "Active",
+        "eventContact" : {
+            "name" : "Simon",
+            "email" : "test@mail.dk",
+            "phone" : "11223344"
+        },
+        "__v" : 0
+    },
+    {
+        "_id": "5cedc2eb277a08583c3c5381",
+        "_type": "EventType",
+        "title" : "test_event_number_five",
+        "date": "2020-08-15 00:00:00.000Z",
+        "description" : "This is a hoax description only used to take up space and waste the time of any poor soul who would ever be so unfortunate as to have being jebaited into reading through the entirety of this text",
+        "location" : "Søndergade 2, 6400 Sønderborg",
+        "targetGroupMin" : 25,
+        "targetGroupMax" : 30,
+        "imageId" : "none",
+        "externLink" : "",
+        "signups" : 0,
+        "status" : "Active",
+        "eventContact" : {
+            "name" : "Simon",
+            "email" : "test@mail.dk",
+            "phone" : "11223344"
+        },
+        "__v" : 0
+    }
+]

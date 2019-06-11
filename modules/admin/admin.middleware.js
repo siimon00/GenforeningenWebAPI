@@ -30,7 +30,6 @@
 
     // function to create an admin
     function createAdmin(req, res, next) {
-
         AdminService.getAdmin(req.body.username)
             .then(getAdminSuccess)
             .catch(failure);

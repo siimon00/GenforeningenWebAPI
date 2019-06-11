@@ -1,0 +1,26 @@
+[
+    {
+        "_id": "5cec53900222755dc4aeb87a",
+        "_type": "AdminType",
+        "username": "test_admin_one",
+        "password": "password_one",
+        "name": "Admin One",
+        "__v": "0"
+    },
+    {
+        "_id": "5cec5a8147fb8651dc1a3d61",
+        "_type": "AdminType",
+        "username": "test_admin_two",
+        "password": "password_two",
+        "name": "Admin Two",
+        "__v": "0"
+    },
+    {
+        "_id": "5cec94ed97ef2f43141c2b9c",
+        "_type": "AdminType",
+        "username": "test_admin_three",
+        "password": "password_three",
+        "name": "Admin Three",
+        "__v": "0"
+    }
+]

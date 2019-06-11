@@ -1,0 +1,17 @@
+{
+    "title" : "test_event_number_six",
+    "date": "2020-08-15 00:00:00.000Z",
+    "description" : "This is a hoax description only used to take up space and waste the time of any poor soul who would ever be so unfortunate as to have being jebaited into reading through the entirety of this text",
+    "location" : "Søndergade 2, 6400 Sønderborg",
+    "targetGroupMin" : 25,
+    "targetGroupMax" : 30,
+    "imageId" : "none",
+    "externLink" : "",
+    "signups" : 0,
+    "status" : "Active",
+    "eventContact" : {
+        "name" : "Simon",
+        "email" : "test@mail.dk",
+        "phone" : "11223344"
+    }
+}
