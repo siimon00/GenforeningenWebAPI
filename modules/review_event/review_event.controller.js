@@ -4,6 +4,8 @@
     var express = require('express');
     var router = express.Router();
 
+    var mongoose = require('mongoose');
+
     var jwt = require('jsonwebtoken');
     var jwt_config = require('../../jwt_config/config');
 
@@ -35,6 +37,14 @@
         }
     }
 
+    // GET 50 review_events from position set in body
+    router.get('/',
+        authorization,
+        ReviewEventMiddleware.getReviewEvents,
+        function (req, res) {
+            res.status(200).json(req.response);
+        });
+
     // GET number of review_events
     router.get('/count',
         authorization,
@@ -43,12 +53,24 @@
             res.status(200).json(req.response);
         });
 
-    // GET 50 review_events from position set in body
-    router.get('/',
+    // GET a review_event
+    router.get('/:id',
         authorization,
-        ReviewEventMiddleware.getReviewEvents,
+        function (req, res, next) {
+            try {
+                let objectId = mongoose.Types.ObjectId(req.params.id);
+                next();
+            } catch (err) {
+                res.status(400).send();
+            }
+        },
+        ReviewEventMiddleware.getReviewEvent,
         function (req, res) {
-            res.status(200).json(req.response);
+            if (req.response) {
+                res.status(200).json(req.response);
+            } else {
+                res.status(404).send();
+            }
         });
 
     // POST a new review_event

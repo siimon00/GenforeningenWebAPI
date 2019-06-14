@@ -3,6 +3,7 @@
 
     module.exports = {
         count: count,
+        getReviewEvent: getReviewEvent,
         getReviewEvents: getReviewEvents,
         createReviewEvent: createReviewEvent,
         approveReviewEvent: approveReviewEvent,
@@ -25,6 +26,20 @@
             next();
         }
 
+        function failure(err) {
+            next(err);
+        }
+    }
+
+    function getReviewEvent(req, res, next) {
+        ReviewEventService.getReviewEvent(req.params.id)
+            .then(success)
+            .catch(failure);
+
+        function success(data) {
+            req.response = data;
+            next();
+        }
         function failure(err) {
             next(err);
         }

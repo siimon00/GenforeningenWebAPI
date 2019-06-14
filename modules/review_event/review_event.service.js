@@ -49,7 +49,7 @@
         let params = getSearchParams(search, date, desc);
         return ReviewEventModel.countDocuments(params).exec();
     }
-
+    
     function getReviewEvent(id) {
         return ReviewEventModel.findOne({ _id: mongoose.Types.ObjectId(id) })
             .exec();
