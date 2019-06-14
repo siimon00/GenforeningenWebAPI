@@ -26,7 +26,7 @@
     
                         const fileInfo = {
                             filename: filename,
-                            bucketName: 'genforeningen'
+                            bucketName: 'event-images'
                         };
                         resolve(fileInfo);
                     });
@@ -51,7 +51,7 @@
         ImageMiddleware.getFileData,
         function (req, res) {
             if(req.response){
-                let gridFSbucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'genforeningen' });
+                let gridFSbucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, { bucketName: 'event-images' });
                 if (gridFSbucket) {
                     res.set('Content-Type', req.response.contentType);
                     res.set(
